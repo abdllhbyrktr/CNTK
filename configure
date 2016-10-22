@@ -60,6 +60,10 @@ have_opencv=no
 opencv_path=
 opencv_check=include/opencv2/opencv.hpp
 
+have_protobuf=no
+protobuf_path=
+protobuf_check=lib/libprotobuf.a
+
 have_libzip=no
 libzip_path=
 libzip_check=include/zip.h
@@ -98,6 +102,7 @@ default_gdk_nvml_libs="src/gdk/nvml/lib"
 default_cubs="cub-1.4.1"
 default_cudnns="cudnn-5.1 cudnn-5.0"
 default_opencvs="opencv-3.1.0 opencv-3.0.0"
+default_protobufs="protobuf-3.1.0 protobuf-3.1.x"
 default_libzips="libzip-1.1.2"
 default_swig="swig-3.0.10"
 
@@ -185,6 +190,11 @@ function find_cudnn ()
 function find_opencv ()
 {
     find_dir "$default_opencvs" "$opencv_check"
+}
+
+function find_protobuf ()
+{
+    find_dir "$default_protobufs" "$protobuf_check"
 }
 
 function find_libzip ()
