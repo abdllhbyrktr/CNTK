@@ -33,8 +33,11 @@
 
     <HasOpenCv>false</HasOpenCv>
     <HasOpenCv Condition="Exists('$(OPENCV_PATH)') Or Exists('$(OPENCV_PATH_V31)')">true</HasOpenCv>
-	
-	<HasBoost>false</HasBoost>
+    
+    <HasProtobuf>false</HasProtobuf>
+    <HasProtobuf Condition="Exists('$(PROTOBUF_PATH)')">true</HasProtobuf>
+
+    <HasBoost>false</HasBoost>
     <HasBoost Condition="Exists('$(BOOST_INCLUDE_PATH)') And Exists('$(BOOST_LIB_PATH)')">true</HasBoost>
 
     <UseZip>false</UseZip>
@@ -91,13 +94,13 @@
     <OpenCvBinPath>$(OpenCvPath)\x64\vc12\bin</OpenCvBinPath>
   </PropertyGroup>
 
-  <PropertyGroup Condition="Exists('$(PROTOBUF_PATH)')">
+  <PropertyGroup Condition="$(HasProtobuf)">
     <ProtobufInclude>$(PROTOBUF_PATH)\include;</ProtobufInclude>
     <ProtobufLibPath>$(PROTOBUF_PATH)\lib;</ProtobufLibPath>
     <ProtobufLib Condition="$(ReleaseBuild)">libprotobuf.lib</ProtobufLib>
     <ProtobufLib Condition="$(DebugBuild)">libprotobufd.lib</ProtobufLib>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(CudaVersion)' == '8.0'">
     <CudaPath>$(CUDA_PATH_V8_0)</CudaPath>
     <CudaRuntimeDll>cudart64_80.dll</CudaRuntimeDll>

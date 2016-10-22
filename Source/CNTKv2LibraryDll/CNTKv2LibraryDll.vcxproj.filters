@@ -36,12 +36,6 @@
     <ClInclude Include="API\CNTKLibraryExperimental.h">
       <Filter>API</Filter>
     </ClInclude>
-    <ClInclude Include="proto\CNTK.pb.h">
-      <Filter>proto</Filter>
-    </ClInclude>
-    <ClInclude Include="proto\CNTK.pb.cc">
-      <Filter>proto</Filter>
-    </ClInclude>
     <ClInclude Include="Serialization.h" />
     <ClInclude Include="Value.h" />
     <ClInclude Include="PrimitiveOpType.h" />
