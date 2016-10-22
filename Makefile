@@ -31,6 +31,8 @@
 #     If not specified, Kaldi plugins will not be built
 #   OPENCV_PATH= path to OpenCV 3.1.0 installation, so $(OPENCV_PATH) exists
 #     defaults to /usr/local/opencv-3.1.0
+#   PROTOBUF_PATH= path to Protocol Buffers 3.1.0 installation, so $(PROTOBUF_PATH) exists
+#     defaults to /usr/local/protobuf-3.1.0
 #   LIBZIP_PATH= path to libzip installation, so $(LIBZIP_PATH) exists
 #     defaults to /usr/local/
 #   BOOST_PATH= path to Boost installation, so $(BOOST_PATH)/include/boost/test/unit_test.hpp
@@ -74,6 +76,8 @@ endif
 # The actual compiler/linker flags added can be viewed by running 'mpic++ --showme:compile' and 'mpic++ --showme:link'
 CXX = mpic++
 SSE_FLAGS = -msse4.1 -mssse3
+
+PROTOC = $(PROTOBUF_PATH)/bin/protoc
 
 # Settings for ARM64 architectures that use a crosscompiler on a host machine.
 #CXX = aarch64-linux-gnu-g++
@@ -1061,13 +1065,18 @@ DEP := $(patsubst %.o, %.d, $(OBJ))
 
 BUILD_CONFIGURATION := Makefile $(BUILD_TOP)/Config.make
 
+$(SOURCEDIR)/%.pb.cc: %.proto
+	@echo $(SEPARATOR)
+	@echo compiling protobuf $<
+	$(PROTOC) -I. --cpp_out=. $<
+
 $(OBJDIR)/%.o : %.cu $(BUILD_CONFIGURATION)
 	@echo $(SEPARATOR)
 	@echo creating $@ for $(ARCH) with build type $(BUILDTYPE)
 	@mkdir -p $(dir $@)
 	$(NVCC) -c $< -o $@ $(COMMON_FLAGS) $(CUFLAGS) $(INCLUDEPATH:%=-I%) -Xcompiler "-fPIC -Werror"
 
-$(OBJDIR)/%.o : %.cc $(BUILD_CONFIGURATION) 
+$(OBJDIR)/%.o : %.pb.cc $(BUILD_CONFIGURATION) 
 	@echo $(SEPARATOR)
 	@echo creating $@ for $(ARCH) with build type $(BUILDTYPE)
 	@mkdir -p $(dir $@)
